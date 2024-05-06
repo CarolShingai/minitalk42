@@ -6,7 +6,7 @@
 #    By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/11 16:09:26 by cshingai          #+#    #+#              #
-#    Updated: 2024/04/12 18:40:57 by cshingai         ###   ########.fr        #
+#    Updated: 2024/04/24 17:12:02 by cshingai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,19 +20,19 @@ HEADER = -I $(LIBFT)
 LIB = $(LIBFT)/libft.a $(FT_PRINTF)/libftprintf.a
 
 # Source files
-SRCS_CLIENT = client.c
-SRCS_SERVER = server.c
+SRCS_CLIENT = src/client.c
+SRCS_SERVER = src/server.c
 
 # Object files derived from source files
-OBJ = $(SRCS_SERVER:%.c=obj/%.o)
+OBJ_SERVER = $(SRCS_SERVER:src/%.c=obj/%.o)
 
 all: libft ft_printf $(SERVER)
 
 # Building the main executable
-$(SERVER): libft ft_printf $(OBJ)
+$(SERVER): libft ft_printf $(OBJ_SERVER)
 	@echo "Entrou NAME"
-	@echo $(OBJ)
-	cc $(FLAGS) $(OBJ) $(LIB) $(HEADER) -o $(SERVER)
+	@echo $(OBJ_SERVER)
+	cc $(FLAGS) $(OBJ_SERVER) $(LIB) $(HEADER) -o $(SERVER)
 
 
 # Building libraries
@@ -53,7 +53,7 @@ obj:
 # Clean up object files
 clean:
 	@echo "Removing objects..."
-	@rm -rf $(OBJ)
+	@rm -rf $(OBJ_SERVER)
 	@make clean -C $(LIBFT)
 	@make clean -C $(FT_PRINTF)
 	@printf "All objects were removed.🧹💨💨"
@@ -61,7 +61,7 @@ clean:
 # Remove object files and executables
 fclean: clean
 	@echo "Removing executables..."
-	@rm -rf $(NAME)
+	@rm -rf $(SERVER)
 	@make fclean -C $(LIBFT)
 	@make fclean -C $(FT_PRINTF)
 	@echo "Executables removed.🤖🧹💨💨"
