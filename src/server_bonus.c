@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/08 16:33:24 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/06 18:25:23 by cshingai         ###   ########.fr       */
+/*   Created: 2024/05/09 16:36:00 by cshingai          #+#    #+#             */
+/*   Updated: 2024/05/09 18:05:00 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "../include/minitalk.h"
 
 void	welcome_display(void)
 {
@@ -45,6 +45,7 @@ void	handler_sigusr(int signal, siginfo_t *info, void *context)
 
 	static unsigned char	character;
 	static int				bit;
+	(void ) context;
 
 	if (signal == SIGUSR1)
 		character = character | (1 << bit);
@@ -54,7 +55,7 @@ void	handler_sigusr(int signal, siginfo_t *info, void *context)
 	kill(info->si_pid, SIGUSR2);
 	if (bit == 8)
 	{
-		write(1, character, 1);
+		write(1, &character, 1);
 		character = 0;
 		bit = 0;
 		kill(info->si_pid, SIGUSR1);
@@ -77,15 +78,10 @@ int	ft_valid_pid(char *pid)
 
 int	main(void)
 {
-	__pid_t				pid;
 	struct sigaction	sa;
 
 	sa.sa_sigaction = &handler_sigusr;
 	sa.sa_flags = SA_SIGINFO;
 	welcome_display();
-	while (1)
-	{
-
-	}
 	return (0);
 }

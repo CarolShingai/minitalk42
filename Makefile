@@ -6,16 +6,17 @@
 #    By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/11 16:09:26 by cshingai          #+#    #+#              #
-#    Updated: 2024/04/24 17:12:02 by cshingai         ###   ########.fr        #
+#    Updated: 2024/05/09 18:02:28 by cshingai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME =
 FLAGS = -Wall -Werror -Wextra
 LIBFT = lib/libft
 FT_PRINTF = lib/ft_printf
 CLIENT = client
 SERVER = server
+CLIENT_BONUS = client_bonus
+SERVER_BONUS = server_bonus
 HEADER = -I $(LIBFT)
 LIB = $(LIBFT)/libft.a $(FT_PRINTF)/libftprintf.a
 
@@ -23,17 +24,41 @@ LIB = $(LIBFT)/libft.a $(FT_PRINTF)/libftprintf.a
 SRCS_CLIENT = src/client.c
 SRCS_SERVER = src/server.c
 
+# Bonus
+SRCS_CLIENT_BONUS = src/client_bonus.c
+SRCS_SERVER_BONUS = src/server_bonus.c
+
 # Object files derived from source files
 OBJ_SERVER = $(SRCS_SERVER:src/%.c=obj/%.o)
+OBJ_CLIENT = $(SRCS_CLIENT:src/%.c=obj/%.o)
 
-all: libft ft_printf $(SERVER)
+OBJ_CLIENT_BONUS = $(SRCS_CLIENT_BONUS:src/%.c=obj/%.o)
+OBJ_SERVER_BONUS = $(SRCS_SERVER_BONUS:src/%.c=obj/%.o)
+
+all: libft ft_printf $(SERVER) $(CLIENT)
+bonus: libft ft_printf $(SERVER_BONUS) $(CLIENT_BONUS)
 
 # Building the main executable
 $(SERVER): libft ft_printf $(OBJ_SERVER)
 	@echo "Entrou NAME"
 	@echo $(OBJ_SERVER)
-	cc $(FLAGS) $(OBJ_SERVER) $(LIB) $(HEADER) -o $(SERVER)
+	@cc $(FLAGS) $(OBJ_SERVER) $(LIB) $(HEADER) -o $(SERVER)
 
+$(CLIENT): libft ft_printf $(OBJ_CLIENT)
+	@echo "Entrou NAME"
+	@echo $(OBJ_CLIENT)
+	@cc $(FLAGS) $(OBJ_CLIENT) $(LIB) $(HEADER) -o $(CLIENT)
+
+# Building bonus executables
+$(SERVER_BONUS): libft ft_printf $(OBJ_SERVER_BONUS)
+	@echo "Entrou NAME"
+	@echo $(OBJ_SERVER_BONUS)
+	@cc $(FLAGS) $(OBJ_SERVER_BONUS) $(LIB) $(HEADER) -o $(SERVER_BONUS)
+
+$(CLIENT_BONUS): libft ft_printf $(OBJ_CLIENT_BONUS)
+	@echo "Entrou CLIENT"
+	@echo $(OBJ_CLIENT_BONUS)
+	@cc $(FLAGS) $(OBJ_CLIENT_BONUS) $(LIB) $(HEADER) -o $(CLIENT_BONUS)
 
 # Building libraries
 libft:
@@ -43,25 +68,25 @@ ft_printf:
 	@make -C $(FT_PRINTF) all
 
 # Compilation rule for object files
-obj/%.o: %.c
+obj/%.o: src/%.c
+	@mkdir -p obj
 	@cc $(FLAGS) -c $(HEADER) $< -o $@
 	@printf "Everything have been build.⭐😁"
-
-obj:
-	@mkdir -p obj
 
 # Clean up object files
 clean:
 	@echo "Removing objects..."
 	@rm -rf $(OBJ_SERVER)
+	@rm -rf $(OBJ_CLIENT)
 	@make clean -C $(LIBFT)
 	@make clean -C $(FT_PRINTF)
-	@printf "All objects were removed.🧹💨💨"
+	@printf "All objects were removed.🧹💨💨\n"
 
 # Remove object files and executables
 fclean: clean
 	@echo "Removing executables..."
 	@rm -rf $(SERVER)
+	@rm -rf $(CLIENT)
 	@make fclean -C $(LIBFT)
 	@make fclean -C $(FT_PRINTF)
 	@echo "Executables removed.🤖🧹💨💨"
@@ -69,4 +94,4 @@ fclean: clean
 # Rebuild everything
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re test

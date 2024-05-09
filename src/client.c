@@ -6,15 +6,16 @@
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:06:24 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/06 20:28:35 by cshingai         ###   ########.fr       */
+/*   Updated: 2024/05/09 18:12:58 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "../include/minitalk.h"
+
+int		g_is_received;
 
 int	main(int argc, char **argv)
 {
-	int		g_is_received;
 	__pid_t	pid;
 
 	if (argc != 3)
@@ -23,6 +24,8 @@ int	main(int argc, char **argv)
 		return (ft_printf("Invalid PID! Please inseart a valid PID."));
 	pid = ft_atoi(argv[1]);
 	signal_config_client();
+	ft_send_msg(pid, *argv[2]);
+	return (0);
 }
 
 //Configuring the signal for the client
@@ -30,7 +33,7 @@ void	signal_config_client(void)
 {
 	struct sigaction	sa;
 
-	sa.sa_flagas = 0;
+	sa.sa_flags = 0;
 	sa.sa_handler = &handle_client_sign;
 	if ((sigaction(SIGUSR1, &sa, NULL) == - 1) || (sigaction(SIGUSR2, &sa, NULL) == -1))
 			ft_printf("ERROR!");
@@ -62,5 +65,22 @@ void	handle_client_sign(int sign)
 
 void	ft_send_msg(int pid, char c)
 {
-	
+	static int	i;
+	static char	bit;
+
+	i = 0;
+	bit = 0;
+	while (i < 8)
+	{
+		g_is_received = 0;
+		bit = c << i & 1;
+		if (bit)
+			kill(pid, SIGUSR1);
+		else if (bit == 0)
+			kill(pid, SIGUSR2);
+		while (!g_is_received)
+		;
+		i++;
+	}
+
 }
