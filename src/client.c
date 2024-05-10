@@ -6,7 +6,7 @@
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:06:24 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/09 18:12:58 by cshingai         ###   ########.fr       */
+/*   Updated: 2024/05/10 15:43:39 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,19 @@ int		g_is_received;
 int	main(int argc, char **argv)
 {
 	__pid_t	pid;
+	struct sigaction	sa;
 
 	if (argc != 3)
 		return (ft_printf("Invalid number of arguments."));
 	if (ft_valid_pid(argv[1]))
 		return (ft_printf("Invalid PID! Please inseart a valid PID."));
-	pid = ft_atoi(argv[1]);
-	signal_config_client();
-	ft_send_msg(pid, *argv[2]);
-	return (0);
-}
-
-//Configuring the signal for the client
-void	signal_config_client(void)
-{
-	struct sigaction	sa;
-
 	sa.sa_flags = 0;
 	sa.sa_handler = &handle_client_sign;
-	if ((sigaction(SIGUSR1, &sa, NULL) == - 1) || (sigaction(SIGUSR2, &sa, NULL) == -1))
-			ft_printf("ERROR!");
-		exit(1);
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
+	pid = ft_atoi(argv[1]);
+	ft_send_signal(pid, *argv[2]);
+	return (0);
 }
 
 int	ft_valid_pid(char *pid)
@@ -63,7 +55,7 @@ void	handle_client_sign(int sign)
 		g_is_received = 1;
 }
 
-void	ft_send_msg(int pid, char c)
+void	ft_send_signal(int pid, char c)
 {
 	static int	i;
 	static char	bit;

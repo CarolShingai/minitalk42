@@ -6,7 +6,7 @@
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 16:36:00 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/09 18:05:00 by cshingai         ###   ########.fr       */
+/*   Updated: 2024/05/10 15:23:53 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	welcome_display(void)
 
 void	handler_sigusr(int signal, siginfo_t *info, void *context)
 {
-
 	static unsigned char	character;
 	static int				bit;
 	(void ) context;
@@ -62,26 +61,14 @@ void	handler_sigusr(int signal, siginfo_t *info, void *context)
 	}
 }
 
-int	ft_valid_pid(char *pid)
-{
-	int	i;
-
-	i = 0;
-	while (pid[i])
-	{
-		if (!ft_isdigit(pid[i]))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 int	main(void)
 {
 	struct sigaction	sa;
 
 	sa.sa_sigaction = &handler_sigusr;
 	sa.sa_flags = SA_SIGINFO;
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	welcome_display();
 	return (0);
 }

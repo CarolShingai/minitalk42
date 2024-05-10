@@ -6,7 +6,7 @@
 #    By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/11 16:09:26 by cshingai          #+#    #+#              #
-#    Updated: 2024/05/09 18:02:28 by cshingai         ###   ########.fr        #
+#    Updated: 2024/05/10 17:25:58 by cshingai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,23 +42,23 @@ bonus: libft ft_printf $(SERVER_BONUS) $(CLIENT_BONUS)
 $(SERVER): libft ft_printf $(OBJ_SERVER)
 	@echo "Entrou NAME"
 	@echo $(OBJ_SERVER)
-	@cc $(FLAGS) $(OBJ_SERVER) $(LIB) $(HEADER) -o $(SERVER)
+	@cc $(FLAGS) $(OBJ_SERVER) $(LIB) $(HEADER) -g3 -o $(SERVER)
 
 $(CLIENT): libft ft_printf $(OBJ_CLIENT)
 	@echo "Entrou NAME"
 	@echo $(OBJ_CLIENT)
-	@cc $(FLAGS) $(OBJ_CLIENT) $(LIB) $(HEADER) -o $(CLIENT)
+	@cc $(FLAGS) $(OBJ_CLIENT) $(LIB) $(HEADER) -g3 -o $(CLIENT)
 
 # Building bonus executables
 $(SERVER_BONUS): libft ft_printf $(OBJ_SERVER_BONUS)
 	@echo "Entrou NAME"
 	@echo $(OBJ_SERVER_BONUS)
-	@cc $(FLAGS) $(OBJ_SERVER_BONUS) $(LIB) $(HEADER) -o $(SERVER_BONUS)
+	@cc $(FLAGS) $(OBJ_SERVER_BONUS) $(LIB) $(HEADER) -g3 -o $(SERVER_BONUS)
 
 $(CLIENT_BONUS): libft ft_printf $(OBJ_CLIENT_BONUS)
 	@echo "Entrou CLIENT"
 	@echo $(OBJ_CLIENT_BONUS)
-	@cc $(FLAGS) $(OBJ_CLIENT_BONUS) $(LIB) $(HEADER) -o $(CLIENT_BONUS)
+	@cc $(FLAGS) $(OBJ_CLIENT_BONUS) $(LIB) $(HEADER) -g3 -o $(CLIENT_BONUS)
 
 # Building libraries
 libft:
@@ -78,6 +78,8 @@ clean:
 	@echo "Removing objects..."
 	@rm -rf $(OBJ_SERVER)
 	@rm -rf $(OBJ_CLIENT)
+	@rm -rf $(OBJ_SERVER_BONUS)
+	@rm -rf $(OBJ_CLIENT_BONUS)
 	@make clean -C $(LIBFT)
 	@make clean -C $(FT_PRINTF)
 	@printf "All objects were removed.🧹💨💨\n"
@@ -94,4 +96,4 @@ fclean: clean
 # Rebuild everything
 re: fclean all
 
-.PHONY: all clean fclean re test
+.PHONY: all bonus clean fclean re test
