@@ -1,0 +1,6 @@
+-I
+../include
+-I
+../lib/libft
+-I
+../lib/ft_printf
