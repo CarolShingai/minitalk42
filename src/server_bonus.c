@@ -6,7 +6,7 @@
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 16:36:00 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/15 16:25:42 by cshingai         ###   ########.fr       */
+/*   Updated: 2024/05/15 16:56:36 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	handler_sigusr(int signal, siginfo_t *info, void *context)
 {
 	static unsigned char	character;
 	static int				bit;
-	(void ) context;
 
+	(void ) context;
 	if (signal == SIGUSR1)
 		character = character | (1 << bit);
 	bit++;
@@ -56,7 +56,7 @@ void	handler_sigusr(int signal, siginfo_t *info, void *context)
 	{
 		write(1, &character, 1);
 		if (character == '\0')
-			kill(info->si.pid);
+			kill(info->si.pid, SIGUSR2);
 		character = 0;
 		bit = 0;
 		kill(info->si_pid, SIGUSR1);
@@ -67,10 +67,12 @@ int	main(void)
 {
 	struct sigaction	sa;
 
-	sa.sa_sigaction = &handler_sigusr;
 	sa.sa_flags = SA_SIGINFO;
+	sa.sa_handler = &handler_sigusr;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	welcome_display();
+	while (1)
+		pause();
 	return (0);
 }

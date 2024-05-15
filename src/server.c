@@ -6,7 +6,7 @@
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 18:30:41 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/15 16:04:20 by cshingai         ###   ########.fr       */
+/*   Updated: 2024/05/15 16:57:50 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	handler_sigusr(int signal, siginfo_t *info, void *context)
 	static unsigned char	character;
 	static int				bit;
 
-	if(!context)
+	if (!context)
 		return ;
 	else if (signal == SIGUSR1)
 		character = character | (1 << bit);

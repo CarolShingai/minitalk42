@@ -6,7 +6,7 @@
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:06:24 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/15 15:43:14 by cshingai         ###   ########.fr       */
+/*   Updated: 2024/05/15 16:54:49 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	client_handler(int sign)
 {
 	if (sign == SIGUSR2)
 	{
-		// ft_printf("character was received");
+		ft_printf("character was received");
 		g_is_received = 1;
 	}
 }
@@ -43,13 +43,12 @@ void	ft_send_msg(int pid, char *str)
 	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		ft_send_signal(pid, str[i]);
 		i++;
 	}
 }
-
 
 void	ft_send_signal(int pid, char c)
 {
@@ -71,13 +70,12 @@ void	ft_send_signal(int pid, char c)
 			;
 		bit_idx++;
 	}
-
 }
 
 int	main(int argc, char *argv[])
 {
 	__pid_t				pid;
-	struct	sigaction	sa_signal;
+	struct sigaction	sa_signal;
 
 	if (argc != 3)
 		return (ft_printf("Invalid number of arguments."));
@@ -89,6 +87,5 @@ int	main(int argc, char *argv[])
 	sigaction(SIGUSR2, &sa_signal, NULL);
 	pid = ft_atoi(argv[1]);
 	ft_send_msg(pid, argv[2]);
-	// ft_printf("sign:%d\n", g_is_received);
 	return (0);
 }
