@@ -6,23 +6,13 @@
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:06:24 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/17 17:21:26 by cshingai         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:45:25 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
 
 int	g_is_received;
-
-int	is_received(int semaphore)
-{
-	static int	is_rec;
-
-	if (semaphore < 0)
-		return (is_rec);
-	is_rec = semaphore;
-	return (is_rec);
-}
 
 int	ft_valid_pid(char *pid)
 {
@@ -47,7 +37,7 @@ void	client_handler(int sign)
 		g_is_received = 1;
 	}
 	else if (sign == SIGUSR1)
-		ft_printf("Message has been totally received by server.");
+		ft_printf(GREEN"Message has been totally received by server."RESET);
 }
 
 void	ft_send_msg(int pid, char *str)
@@ -91,9 +81,9 @@ int	main(int argc, char *argv[])
 
 	ft_memset(&sa_signal, 0, sizeof(sa_signal));
 	if (argc != 3)
-		return (ft_printf("Invalid number of arguments.\n"));
+		return (ft_printf(RED"Invalid number of arguments.\n"RESET));
 	if (ft_valid_pid(argv[1]))
-		return (ft_printf("Invalid PID! Please inseart a valid PID.\n"));
+		return (ft_printf(RED"Invalid PID! Please inseart a valid PID.\n"RESET));
 	sa_signal.sa_flags = 0;
 	sa_signal.sa_handler = &client_handler;
 	sigaction(SIGUSR1, &sa_signal, NULL);

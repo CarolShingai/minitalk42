@@ -6,7 +6,7 @@
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 16:36:04 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/17 16:53:43 by cshingai         ###   ########.fr       */
+/*   Updated: 2024/05/17 17:59:40 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,11 @@ void	client_handler(int sign)
 {
 	if (sign == SIGUSR2)
 	{
-		ft_printf("character was received\n");
+		ft_printf(".");
 		g_is_received = 1;
 	}
+	else if (sign == SIGUSR1)
+		ft_printf(GREEN"Message has been totally received by server.");
 }
 
 void	ft_send_msg(int pid, char *str)
@@ -48,6 +50,7 @@ void	ft_send_msg(int pid, char *str)
 		ft_send_signal(pid, str[i]);
 		i++;
 	}
+	ft_send_signal(pid, str[i]);
 }
 
 void	ft_send_signal(int pid, char c)
@@ -61,7 +64,6 @@ void	ft_send_signal(int pid, char c)
 	{
 		g_is_received = 0;
 		bit = c >> bit_idx & 1;
-		ft_printf("%d", bit);
 		if (bit)
 			kill(pid, SIGUSR1);
 		else if (bit == 0)
@@ -88,7 +90,5 @@ int	main(int argc, char *argv[])
 	sigaction(SIGUSR2, &sa_signal, NULL);
 	pid = ft_atoi(argv[1]);
 	ft_send_msg(pid, argv[2]);
-	ft_send_signal(pid, '\n');
-	ft_send_signal(pid, '\0');
 	return (0);
 }

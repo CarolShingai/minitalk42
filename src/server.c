@@ -6,7 +6,7 @@
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 18:30:41 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/17 17:09:58 by cshingai         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:43:15 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	welcome_display(void)
 	ft_printf("(_____)-----------------------------------------", "");
 	ft_printf("-----------------------------------(_____)\n");
 	ft_printf("            ----- Welcome to Minitalk! ------ ");
-	ft_printf("The PID number is: %d ------\n\n", getpid());
+	ft_printf("The PID number is: %d------\n\n", getpid());
 }
 
 void	handler_sigusr(int signal, siginfo_t *info, void *context)
@@ -49,11 +49,9 @@ void	handler_sigusr(int signal, siginfo_t *info, void *context)
 		return ;
 	else if (signal == SIGUSR1)
 		character = character | (1 << bit);
-	// ft_printf("%d ", character);
 	bit++;
 	if (bit == 8)
 	{
-		write(1, &character, 1);
 		if (character == '\0')
 			kill(info->si_pid, SIGUSR1);
 		character = 0;
