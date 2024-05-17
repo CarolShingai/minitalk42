@@ -6,7 +6,7 @@
 #    By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/11 16:09:26 by cshingai          #+#    #+#              #
-#    Updated: 2024/05/10 17:25:58 by cshingai         ###   ########.fr        #
+#    Updated: 2024/05/17 16:04:19 by cshingai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,6 +89,8 @@ fclean: clean
 	@echo "Removing executables..."
 	@rm -rf $(SERVER)
 	@rm -rf $(CLIENT)
+	@rm -rf $(SERVER_BONUS)
+	@rm -rf $(CLIENT_BONUS)
 	@make fclean -C $(LIBFT)
 	@make fclean -C $(FT_PRINTF)
 	@echo "Executables removed.🤖🧹💨💨"

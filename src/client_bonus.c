@@ -6,7 +6,7 @@
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 16:36:04 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/15 17:57:53 by cshingai         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:53:43 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,55 +29,66 @@ int	ft_valid_pid(char *pid)
 }
 
 // handler the signal for client
-void	handle_client_sign(int sign)
+void	client_handler(int sign)
 {
-	if (sign == SIGUSR1)
-		ft_printf("character was received");
-	else if (sign == SIGUSR2)
+	if (sign == SIGUSR2)
+	{
+		ft_printf("character was received\n");
 		g_is_received = 1;
+	}
+}
+
+void	ft_send_msg(int pid, char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		ft_send_signal(pid, str[i]);
+		i++;
+	}
 }
 
 void	ft_send_signal(int pid, char c)
 {
-	static int	i;
+	static int	bit_idx;
 	static char	bit;
 
-	i = 0;
+	bit_idx = 0;
 	bit = 0;
-	while (i < 8)
+	while (bit_idx < 8)
 	{
 		g_is_received = 0;
-		bit = c >> i & 1;
+		bit = c >> bit_idx & 1;
+		ft_printf("%d", bit);
 		if (bit)
 			kill(pid, SIGUSR1);
 		else if (bit == 0)
 			kill(pid, SIGUSR2);
 		while (!g_is_received)
 			;
-		i++;
+		bit_idx++;
 	}
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char *argv[])
 {
-	int					idx;
 	__pid_t				pid;
-	struct sigaction	sa;
+	struct sigaction	sa_signal;
 
-	idx = 0;
+	ft_memset(&sa_signal, 0, sizeof(sa_signal));
 	if (argc != 3)
-		return (ft_printf("Invalid number of arguments."));
+		return (ft_printf("Invalid number of arguments.\n"));
 	if (ft_valid_pid(argv[1]))
-		return (ft_printf("Invalid PID! Please inseart a valid PID."));
-	sa.sa_flags = 0;
-	sa.sa_handler = &handle_client_sign;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
+		return (ft_printf("Invalid PID! Please inseart a valid PID.\n"));
+	sa_signal.sa_flags = 0;
+	sa_signal.sa_handler = &client_handler;
+	sigaction(SIGUSR1, &sa_signal, NULL);
+	sigaction(SIGUSR2, &sa_signal, NULL);
 	pid = ft_atoi(argv[1]);
-	while (argv[2][idx])
-	{
-		ft_send_signal(pid, argv[2][idx]);
-		idx++;
-	}
+	ft_send_msg(pid, argv[2]);
+	ft_send_signal(pid, '\n');
+	ft_send_signal(pid, '\0');
 	return (0);
 }

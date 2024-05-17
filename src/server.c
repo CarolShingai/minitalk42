@@ -6,7 +6,7 @@
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 18:30:41 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/15 16:57:50 by cshingai         ###   ########.fr       */
+/*   Updated: 2024/05/17 17:09:58 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,17 @@ void	handler_sigusr(int signal, siginfo_t *info, void *context)
 		return ;
 	else if (signal == SIGUSR1)
 		character = character | (1 << bit);
-	ft_printf("%d ", character);
+	// ft_printf("%d ", character);
 	bit++;
-	kill(info->si_pid, SIGUSR2);
 	if (bit == 8)
 	{
 		write(1, &character, 1);
+		if (character == '\0')
+			kill(info->si_pid, SIGUSR1);
 		character = 0;
 		bit = 0;
-		kill(info->si_pid, SIGUSR1);
 	}
+	kill(info->si_pid, SIGUSR2);
 }
 
 int	ft_valid_pid(char *pid)
@@ -79,6 +80,7 @@ int	main(void)
 {
 	struct sigaction	sa_signal;
 
+	ft_memset(&sa_signal, 0, sizeof(sa_signal));
 	sa_signal.sa_flags = SA_SIGINFO;
 	sa_signal.sa_sigaction = &handler_sigusr;
 	sigaction(SIGUSR1, &sa_signal, NULL);

@@ -6,7 +6,7 @@
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 16:36:00 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/15 16:56:36 by cshingai         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:53:10 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,32 +45,48 @@ void	handler_sigusr(int signal, siginfo_t *info, void *context)
 	static unsigned char	character;
 	static int				bit;
 
-	(void ) context;
-	if (signal == SIGUSR1)
+	if (!context)
+		return ;
+	else if (signal == SIGUSR1)
 		character = character | (1 << bit);
+	ft_printf("%d ", character);
+	write(1, &character, 1);
 	bit++;
-	write(STDOUT_FILENO, "Sinal recebido.\n", 17);
-	write(1, &signal, 5);
 	kill(info->si_pid, SIGUSR2);
 	if (bit == 8)
 	{
 		write(1, &character, 1);
 		if (character == '\0')
-			kill(info->si.pid, SIGUSR2);
+			kill(info->si_pid, SIGUSR2);
 		character = 0;
 		bit = 0;
 		kill(info->si_pid, SIGUSR1);
 	}
 }
 
+int	ft_valid_pid(char *pid)
+{
+	int	i;
+
+	i = 0;
+	while (pid[i])
+	{
+		if (!ft_isdigit(pid[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	main(void)
 {
-	struct sigaction	sa;
+	struct sigaction	sa_signal;
 
-	sa.sa_flags = SA_SIGINFO;
-	sa.sa_handler = &handler_sigusr;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
+	ft_memset(&sa_signal, 0, sizeof(sa_signal));
+	sa_signal.sa_flags = SA_SIGINFO;
+	sa_signal.sa_sigaction = &handler_sigusr;
+	sigaction(SIGUSR1, &sa_signal, NULL);
+	sigaction(SIGUSR2, &sa_signal, NULL);
 	welcome_display();
 	while (1)
 		pause();
