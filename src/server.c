@@ -6,7 +6,7 @@
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 18:30:41 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/17 18:43:15 by cshingai         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:47:26 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	handler_sigusr(int signal, siginfo_t *info, void *context)
 	bit++;
 	if (bit == 8)
 	{
+		write(1, &character, 1);
 		if (character == '\0')
 			kill(info->si_pid, SIGUSR1);
 		character = 0;

@@ -6,7 +6,7 @@
 #    By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/11 16:09:26 by cshingai          #+#    #+#              #
-#    Updated: 2024/05/17 18:52:34 by cshingai         ###   ########.fr        #
+#    Updated: 2024/05/21 19:33:29 by cshingai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,24 +40,22 @@ bonus: libft ft_printf $(SERVER_BONUS) $(CLIENT_BONUS)
 
 # Building the main executable
 $(SERVER): libft ft_printf $(OBJ_SERVER)
-	@echo "Entrou NAME"
+	@echo "Entrou SERVER"
 	@echo $(OBJ_SERVER)
 	@cc $(FLAGS) $(OBJ_SERVER) $(LIB) $(HEADER) -g3 -o $(SERVER)
 
 $(CLIENT): libft ft_printf $(OBJ_CLIENT)
-	@echo "Entrou NAME"
+	@echo "Entrou CLIENT"
 	@echo $(OBJ_CLIENT)
 	@cc $(FLAGS) $(OBJ_CLIENT) $(LIB) $(HEADER) -g3 -o $(CLIENT)
 
 # Building bonus executables
 $(SERVER_BONUS): libft ft_printf $(OBJ_SERVER_BONUS)
-	@echo "Entrou NAME"
-	@echo $(OBJ_SERVER_BONUS)
+	@echo "Entrou SERVER_BONUS"
 	@cc $(FLAGS) $(OBJ_SERVER_BONUS) $(LIB) $(HEADER) -g3 -o $(SERVER_BONUS)
 
 $(CLIENT_BONUS): libft ft_printf $(OBJ_CLIENT_BONUS)
-	@echo "Entrou CLIENT"
-	@echo $(OBJ_CLIENT_BONUS)
+	@echo "Entrou CLIENT_BONUS"
 	@cc $(FLAGS) $(OBJ_CLIENT_BONUS) $(LIB) $(HEADER) -g3 -o $(CLIENT_BONUS)
 
 # Building libraries
