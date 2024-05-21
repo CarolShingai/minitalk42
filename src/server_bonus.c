@@ -6,7 +6,7 @@
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 16:36:00 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/17 19:22:57 by cshingai         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:03:48 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ void	welcome_display(void)
 	ft_printf("-----------------------------------( ___ )\n");
 	ft_printf(" |   |                                         ", "");
 	ft_printf("                                     |   |\n");
-	ft_printf(" |   | " PURPLE"ooo        ooooo  o8o               o8o ", ""RESET);
-	ft_printf("     .             oooo  oooo       "RESET" |   |\n");
-	ft_printf(" |   | " PURPLE"`88.       .888'  `*                `*  ", ""RESET);
+	ft_printf(" |   | " PURPLE"ooo        ooooo  o8o               o8o ", "");
+	ft_printf("     .             oooo  oooo       "RESET" ||\n");
+	ft_printf(" |   | " PURPLE"`88.       .888'  `*                `*  ",
+		""RESET);
 	ft_printf(PURPLE"   .o8             `888  `888       " RESET" |   |\n");
 	ft_printf(" |   | "PURPLE" 888b     d'888  oooo  ooo. .oo.   oooo ", "");
 	ft_printf(" .o888oo  .oooo.    888   888  oooo " RESET" |   |\n");

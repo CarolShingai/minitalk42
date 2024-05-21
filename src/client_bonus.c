@@ -6,7 +6,7 @@
 /*   By: cshingai <cshingai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 16:36:04 by cshingai          #+#    #+#             */
-/*   Updated: 2024/05/21 16:13:52 by cshingai         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:01:25 by cshingai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	client_handler(int sign)
 		g_is_received = 1;
 	}
 	else if (sign == SIGUSR1)
-		ft_printf(GREEN"The message has been completely received by the server.");
+		ft_printf(GREEN
+			"The message has been completely received by the server.");
 }
 
 void	ft_send_msg(int pid, char *str)
