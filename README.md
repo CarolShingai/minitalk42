@@ -1,2 +1,2 @@
 # minitalk42
-Send a mensage from a client to server using UNIX signals
+It's a project where send a message from a client to a server, using only UNIX signals.
